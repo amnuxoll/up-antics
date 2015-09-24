@@ -1,10 +1,12 @@
 import random
+import sys
+sys.path.append("..")  #so other modules can be found in parent dir
 from Player import *
 from Constants import *
 from Construction import CONSTR_STATS
 from Ant import UNIT_STATS
 from Move import Move
-from GameState import addCoords
+from GameState import *
 from AIPlayerUtils import *
 
 ##
@@ -91,6 +93,8 @@ class AIPlayer(Player):
     #Return: The Move to be made
     ##
     def getMove(self, currentState):
+        newState = currentState.fastclone()
+        
         moves = listAllLegalMoves(currentState)
         return moves[random.randint(0,len(moves) - 1)]
     
