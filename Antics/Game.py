@@ -41,9 +41,13 @@ class Game(object):
     #processCommandLine
     #
     # parses the command line arguments and configures the game
-    # appropriately.  Currently only "debug" arguments are supported. In this
-    # format: 
-    #            python Game.py debug [<myAIName>] [random]
+    # appropriately.
+    # "debug" arguments are supported. In this format:
+    #           python Game.py debug [<myAIName>] [random]
+    # "-t" or tournament arguments are suported in this format:
+    #           python Game.py -t <AIName1> <AIName2> [-n <number of games>]
+    #       The number of games defaults to 10 if no -n argument is specified.
+    ##
     def processCommandLine(self):
         #process command line arguments
         if (len(sys.argv) > 1):
@@ -74,6 +78,55 @@ class Game(object):
                 #random layout.  
                 if (len(sys.argv) > 3) and (sys.argv[3] == "random"):
                     self.randomSetup = True
+
+            # Check Tournament
+            if sys.argv[1].lower() == "-t":
+                # press the "Tournament Mode" button
+                self.tourneyPathCallback()
+
+                numGames = 10
+
+                # AI names should be specified as next command line args
+                # need exactly two AI names
+                aiNameIndices = []
+                index = -1
+                if (len(sys.argv) > 3):
+                    ainame1 = sys.argv[2]
+                    ainame2 = sys.argv[3]
+                    for player in self.players:
+                        if ainame1 == player[0].author or ainame2 == player[0].author:
+                            # append the name of the indices for the tournament
+                            aiNameIndices.append(self.players.index(player))
+
+                    if (len(aiNameIndices) < 2):
+                        print "ERROR:  AI '" + ainame1 + "' OR AI '" + ainame2 + "' not found."
+                        print "Please specify one of the following:"
+                        for player in self.players[1:]:
+                            print '    "' + player[0].author + '"'
+                        return
+
+                # get the number of games for the tournament if specified
+                if (len(sys.argv) > 5):
+                    if sys.argv[4].lower() == "-n":
+                        try:
+                            numGames = int(sys.argv[5])
+                        except ValueError:
+                            print "ERROR: Please enter a number after -n "
+                            return
+                    else:
+                        print "ERROR: Please specify -n to give a specific number of games to run."
+                        print "     FORMAT: -n 1000"
+                        return
+
+                # now that we have the AI's check the check boxes
+                for index in aiNameIndices:
+                    self.checkBoxClickedCallback(index)
+
+                self.ui.textBoxContent = str(numGames)
+
+                self.submitClickedCallback()
+                self.startGameCallback()
+                pass
         
 
 
@@ -436,7 +489,10 @@ class Game(object):
                 #adjust the wins and losses of players
                 self.playerScores[self.winner][1] += 1
                 self.playerScores[self.loser][2] += 1
-                
+
+                # if CommandLine Mode print the values to the console
+                self.printTournament()
+
                 #reset the game
                 self.initGame()
                
@@ -1158,6 +1214,18 @@ class Game(object):
                     return
             #reset nextClicked to catch next move
             self.nextClicked = False
+
+    ##
+    # printTournament
+    # Description: prints the status of the tournament
+    #
+    ##
+    def printTournament(self):
+        columns = ['AI', 'Wins', 'Losses']
+        row_format ="{:>15}" * (len(columns))
+        print row_format.format(*columns)
+        for row in self.playerScores:
+            print row_format.format(*row)
     
     ##
     #error
@@ -1283,7 +1351,10 @@ class Game(object):
                 for i in range(0, numPairings):
                     #assign equal number of games to each pairing (rounds down)
                     self.gamesToPlay[i][1] = self.numGames
-            
+
+                # print that The tournament has Started
+                print "Tournament Starting..."
+
             #Make a temporary list to append to so that we may check how many AIs we have available.
             tempCurrent = []
              
