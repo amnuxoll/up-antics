@@ -311,15 +311,17 @@ class UserInterface(object):
         background.set_colorkey(WHITE)
         #Then draw the ant itself.
         self.screen.blit(background, (Xpixel, Ypixel))
-        #Draw current health across the top from the left.
-        healthBox = Rect(0,0,10,6)
-        healthPerimiter = Rect(0,0,12,8)
+        #Draw current health across the top from the left as a series of boxes
+        boxWidth = 7;
+        boxHeight = 6;
+        healthBox = Rect(0,0,boxWidth-2,boxHeight-2)
+        healthPerimiter = Rect(0,0,boxWidth,boxHeight)
         for x in xrange(0, UNIT_STATS[ant.type][HEALTH]):
-            pygame.draw.rect(self.screen, DARK_GREEN, healthPerimiter.move(Xpixel + CELL_SIZE.width - 15 * (x + 1) - 1, Ypixel + 1))
+            pygame.draw.rect(self.screen, DARK_GREEN, healthPerimiter.move(Xpixel + CELL_SIZE.width - boxWidth * (x + 1) - 1, Ypixel + 1))
         for x in xrange(0, ant.health):
-            pygame.draw.rect(self.screen, LIGHT_GREEN, healthBox.move(Xpixel + CELL_SIZE.width - 15 * (x + 1), Ypixel + 2))
+            pygame.draw.rect(self.screen, LIGHT_GREEN, healthBox.move(Xpixel + CELL_SIZE.width - boxWidth * (x + 1), Ypixel + 2))
         for x in xrange(ant.health, UNIT_STATS[ant.type][HEALTH]):
-            pygame.draw.rect(self.screen, DARK_RED, healthBox.move(Xpixel + CELL_SIZE.width - 15 * (x + 1), Ypixel + 2))
+            pygame.draw.rect(self.screen, DARK_RED, healthBox.move(Xpixel + CELL_SIZE.width - boxWidth * (x + 1), Ypixel + 2))
         #Draw isCarrying marker in lower right
         if ant.carrying:
             XoffsetCarry = CELL_SIZE.width - self.isCarryingTex.get_width()
