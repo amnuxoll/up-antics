@@ -263,7 +263,7 @@ def listAllMovementPaths(currentState, coords, movement):
 ##
 # stepsToReach
 #
-# estimates the shortest distance between two cells taking
+# calculates the shortest distance between two cells taking
 # movement costs into account.
 #
 #Parameters:
@@ -313,6 +313,20 @@ def stepsToReach(currentState, src, dst):
     #we should never reach this point
     return -1
 
+##
+# approxDist
+#
+# gives an approximate distance between two cells.  This method is much faster
+# than stepsToReach but does not take grass and other ants into account
+#
+#Parameters:
+#   sourceCoords - starting position (an x,y coord)
+#   targetCoords - destination position (an x,y coord)
+#
+# Return: the approximate distance (an integer)
+def approxDist(sourceCoords, targetCoords):
+	return abs(sourceCoords[0]-targetCoords[0]) + abs(sourceCoords[1]-targetCoords[1])
+    
 ##
 # listAllBuildMoves
 #
