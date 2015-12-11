@@ -306,10 +306,12 @@ class Game(object):
                             #if we are in menu phase at this point, a reset was requested so we need to break the game loop.
                             break
                         
-                        #check and take action for attack
-                        self.resolveAttack(antToMove, currentPlayer)
+                        #check and take action for attack (workers can not attack)
+                        if (antToMove.type != WORKER):
+                            self.resolveAttack(antToMove, currentPlayer)
+
+                        #if we are in menu phase at this point, a reset was requested so we need to break the game loop.
                         if self.state.phase == MENU_PHASE:
-                            #if we are in menu phase at this point, a reset was requested so we need to break the game loop.
                             break
 
                         #clear all highlights after attack happens
