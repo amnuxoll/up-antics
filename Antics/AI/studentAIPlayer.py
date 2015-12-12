@@ -33,15 +33,16 @@ class AIPlayer(Player):
     
     ##
     #getPlacement
+    #
     #Description: The getPlacement method corresponds to the 
     #action taken on setup phase 1 and setup phase 2 of the game. 
     #In setup phase 1, the AI player will be passed a copy of the 
     #state as currentState which contains the board, accessed via 
-    #currentState.board. The player will then return a list of 10 tuple 
+    #currentState.board. The player will then return a list of 11 tuple 
     #coordinates (from their side of the board) that represent Locations 
     #to place the anthill and 9 grass pieces. In setup phase 2, the player 
     #will again be passed the state and needs to return a list of 2 tuple
-    #coordinates (on their opponent’s side of the board) which represent
+    #coordinates (on their opponent's side of the board) which represent
     #Locations to place the food sources. This is all that is necessary to 
     #complete the setup phases.
     #
@@ -49,7 +50,7 @@ class AIPlayer(Player):
     #   currentState - The current state of the game at the time the Game is 
     #       requesting a placement from the player.(GameState)
     #
-    #Return: If setup phase 1: list of ten 2-tuples of ints -> [(x1,y1), (x2,y2),…,(x10,y10)]
+    #Return: If setup phase 1: list of eleven 2-tuples of ints -> [(x1,y1), (x2,y2),…,(x10,y10)]
     #       If setup phase 2: list of two 2-tuples of ints -> [(x1,y1), (x2,y2)]
     ##
     def getPlacement(self, currentState):
