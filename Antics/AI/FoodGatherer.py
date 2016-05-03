@@ -42,6 +42,8 @@ class AIPlayer(Player):
     # protection to the queen.  Enemy food is placed randomly.
     #
     def getPlacement(self, currentState):
+        self.myFood = None
+        self.myTunnel = None
         if currentState.phase == SETUP_PHASE_1:
             return [(0,0), (5, 1), 
                     (0,3), (1,2), (2,1), (3,0), \
