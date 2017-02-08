@@ -534,6 +534,10 @@ def getCurrPlayerQueen(currentState):
 # only the inventories are modified and the board is set to None.  The original
 # (given) state is not modified.
 #
+# CAVEAT: To facilitate longer term analysis without having to take enemy moves
+# into consideration, MOVE_ANT commands do not cause the hasMoved property of
+# the ant to change to True.  Furthermore the END move type is ignored.
+#
 # Parameters:
 #   currentState - A clone of the current state (GameState)
 #   move - The move that the agent would take (Move)
@@ -622,6 +626,36 @@ def getNextState(currentState, move):
                             # If attacked an ant already don't attack any more
                             break
     return myGameState
+
+##
+# getNextStateAdversarial
+#
+# Description: This is the same as getNextState (above) except that it properly
+# updates the hasMoved property on ants and the END move is processed correctly.
+#
+# Parameters:
+#   currentState - A clone of the current state (GameState)
+#   move - The move that the agent would take (Move)
+#
+# Return: A clone of what the state would look like if the move was made
+##
+def getNextStateAdversarial(currentState, move):
+    # variables I will need
+    nextState = getNextState(currentState, move)
+    myInv = getCurrPlayerInventory(nextState)
+    myAnts = myInv.ants
+
+    # If an ant is moved update their coordinates and has moved
+    if move.moveType == MOVE_ANT:
+        startingCoord = move.coordList[0]
+        for ant in myAnts:
+            if ant.coords == startingCoord:
+                ant.hasMoved = True
+    elif move.moveType == END:
+        for ant in myAnts:
+            ant.hasMoved = False
+        currentState.whoseTurn = 1 - currentState.whoseTurn;
+    return nextState
 
     
 ##
