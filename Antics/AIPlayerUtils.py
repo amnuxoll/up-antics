@@ -524,6 +524,30 @@ def getCurrPlayerQueen(currentState):
             break
     return queen
 
+
+##
+# Return: a list of the food objects on my side of the board
+def getCurrPlayerFood(self, currentState):
+    food = getConstrList(currentState, None, (FOOD,))
+    myFood = []
+    if (currentState.inventories[0].player == currentState.whoseTurn):
+        myFood.append(food[2])
+        myFood.append(food[3])
+    else:
+        myFood.append(food[0])
+        myFood.append(food[1])
+    return myFood
+
+ 
+
+##
+# Return: a reference to my enemy's inventory
+def getEnemyInv(self, currentState):
+    if (currentState.inventories[0].player == currentState.whoseTurn):
+        return currentState.inventories[1]
+    else:
+        return currentState.inventories[0]
+        
 ##
 # getNextState
 #
