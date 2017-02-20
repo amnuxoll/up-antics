@@ -654,7 +654,7 @@ def getNextStateAdversarial(currentState, move):
     elif move.moveType == END:
         for ant in myAnts:
             ant.hasMoved = False
-        currentState.whoseTurn = 1 - currentState.whoseTurn;
+        nextState.whoseTurn = 1 - currentState.whoseTurn;
     return nextState
 
     
