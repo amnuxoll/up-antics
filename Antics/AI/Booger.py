@@ -102,9 +102,14 @@ class AIPlayer(Player):
             return Move(END, None, None)
 
         #if the worker has already moved, we're done
-        myWorker = getAntList(currentState, me, (WORKER,))[0]
-        if (myWorker.hasMoved):
+        workerList = getAntList(currentState, me, (WORKER,))
+        if (workerList is None):
             return Move(END, None, None)
+        else:
+            myWorker = workerList[0]
+            if (myWorker.hasMoved):
+                return Move(END, None, None)
+            
 
         #if the queen is on the anthill move her
         myQueen = myInv.getQueen()
