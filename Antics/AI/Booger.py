@@ -101,9 +101,10 @@ class AIPlayer(Player):
         if (numAnts == 1):
             return Move(END, None, None)
 
+
         #if the worker has already moved, we're done
         workerList = getAntList(currentState, me, (WORKER,))
-        if (workerList is None):
+        if (len(workerList) < 1):
             return Move(END, None, None)
         else:
             myWorker = workerList[0]
